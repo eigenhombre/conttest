@@ -7,7 +7,12 @@ import hashlib
 import subprocess
 
 
-def include(path):
+def include_file_in_checks(path):
+    """
+    Determine whether file should be included in checks; reject if
+    file has an undesired prefix, an undesired file extension, or
+    lives in an undesired directory.
+    """
     IGNORE_PREFIXES = ('.', '#')
     IGNORE_EXTENSIONS = ('pyc', 'pyo')
     IGNORE_DIRS = ('.git', '.hg', '.svn')
@@ -27,10 +32,14 @@ def include(path):
 
 
 def walk(top, filehashes={}):
+    """
+    Walk directory recursively, storing a hash value for any
+    non-excluded file; return a dictionary for all such files.
+    """
     for root, _, files in os.walk(top, topdown=False):
         for name in files:
             full_path = os.path.join(root, name)
-            if include(full_path):
+            if include_file_in_checks(full_path):
                 try:
                     content = open(full_path).read()
                 except IOError:
@@ -41,6 +50,10 @@ def walk(top, filehashes={}):
 
 
 def watch_dir(dir_, callback):
+    """
+    Loop continuously, calling function <callback> if any non-excluded
+    file has changed.
+    """
     filedict = {}
     while True:
         new = walk(dir_, {})
@@ -64,4 +77,4 @@ if __name__ == "__main__":
     if cmd:
         do_command_on_update(cmd)
     else:
-        print("Usage: %s bash-command args ..." % __file__)
+        print("Usage: %s command args ..." % __file__)
