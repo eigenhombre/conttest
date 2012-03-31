@@ -1,15 +1,5 @@
 #!/usr/bin/env python
 
-"""
-Adapted from https://github.com/brunobord/tdaemon/blob/master/tdaemon.py
-
-Continuous testing helper.
-
-Usage examples:
-  ./conttest.py nosetests
-  ./conttest.py 'nosetests -q && pep8 -r .'
-"""
-
 import time
 import os.path
 import sys
