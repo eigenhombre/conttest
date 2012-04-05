@@ -8,9 +8,12 @@ particular setup.
 Note that ANY command you supply the script will be run, so be
 careful.  You have been warned!
 
+Installation:
+  ./setup.py install
+
 Usage examples:
-  ./conttest.py nosetests
-  ./conttest.py 'nosetests -q && pep8 -r .'
+  conttest nosetests
+  conttest 'nosetests -q && pep8 -r .'
 
 [1] Adapted from https://github.com/brunobord/tdaemon/blob/master/tdaemon.py
 

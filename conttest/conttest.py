@@ -72,9 +72,12 @@ def do_command_on_update(cmd):
         print
 
 
-if __name__ == "__main__":
+def main():
     cmd = ' '.join(sys.argv[1:])
     if cmd:
         do_command_on_update(cmd)
     else:
         print("Usage: %s command args ..." % __file__)
+
+if __name__ == "__main__":
+    main()
