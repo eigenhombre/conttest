@@ -1,6 +1,8 @@
 Continuous testing helper, adapted from [1], but which makes no
 assumption about what tests you might want to run continuously while
-developing.  Any command supplied to the script will be run once and
+developing.  See also [2].
+
+Any command supplied to the script will be run once and
 then repeated any time the code in the current working directory
 changes.  You may wish to edit the IGNORE_* tuples to suit your
 particular setup.
@@ -16,7 +18,7 @@ Usage examples:
   conttest 'nosetests -q && pep8 -r .'
 
 [1] Adapted from https://github.com/brunobord/tdaemon/blob/master/tdaemon.py
-
+[2] More on this at http://johnj.com/navblog/continuous-testing-in-python-and-clojure/
 
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
