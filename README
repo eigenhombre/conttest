@@ -9,7 +9,9 @@ Note that ANY command you supply the script will be run, so be
 careful.  You have been warned!
 
 Installation:
-  ./setup.py install
+  ./setup.py install  # from source
+or
+  easy_install conttest  # or use pip instead of easy_install
 
 Usage examples:
   conttest nosetests
