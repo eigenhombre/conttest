@@ -8,7 +8,6 @@ Usage:
 
 """
 
-import docopt
 import time
 import os.path
 import sys
