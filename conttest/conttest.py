@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+"""
+Continuous Testing Helper
+
+Usage:
+  conttest <cmd> ...
+
+"""
+
+import docopt
 import time
 import os.path
 import sys
@@ -31,12 +40,20 @@ def include_file_in_checks(path):
     return True
 
 
-def walk(top, filehashes={}):
+def skip_excludes(root, excludes):
+    if root.startswith("./"):
+        root = root[2:]
+    return root.split('/')[0] in excludes
+
+
+def walk(top, filehashes={}, excludes=[]):
     """
     Walk directory recursively, storing a hash value for any
     non-excluded file; return a dictionary for all such files.
     """
     for root, _, files in os.walk(top, topdown=False):
+        if skip_excludes(root, excludes):
+            continue
         for name in files:
             full_path = os.path.join(root, name)
             if include_file_in_checks(full_path):
@@ -49,6 +66,12 @@ def walk(top, filehashes={}):
     return filehashes
 
 
+def get_excludes(path):
+    with file(path) as f:
+        return [s.strip() for s in f.read().split()
+                if s.strip() != ""]
+
+
 def watch_dir(dir_, callback):
     """
     Loop continuously, calling function <callback> if any non-excluded
@@ -56,18 +79,18 @@ def watch_dir(dir_, callback):
     """
     filedict = {}
     while True:
-        new = walk(dir_, {})
+        excludes = get_excludes(dir_ + "/.conttest-excludes")
+        new = walk(dir_, {}, excludes=excludes)
         if new != filedict:
             callback()
-        filedict = new
+            # Do it again, in case command changed files (don't retrigger)
+            filedict = walk(dir_, {}, excludes=excludes)
         time.sleep(0.3)
 
 
 def do_command_on_update(cmd):
-    def on_update():
-        subprocess.call(cmd, shell=True)
     try:
-        watch_dir(".", on_update)
+        watch_dir(".", lambda: subprocess.call(cmd, shell=True))
     except KeyboardInterrupt:
         print
 
@@ -79,5 +102,6 @@ def main():
     else:
         print("Usage: %s command args ..." % __file__)
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     main()

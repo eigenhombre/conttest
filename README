@@ -19,6 +19,19 @@ Usage examples:
   conttest nosetests
   conttest 'nosetests -q && pep8 -r .'
 
+Placing a file .conttest-excludes in the current working directory
+will exclude subdirectories, e.g.:
+
+  .svn
+  .git
+  build
+  install
+
+will skip checking for changes in those directories.  This can save
+quite a bit of time and CPU during normal operation.  Currently this
+works for top-level directories only!
+
+
 [1] Adapted from https://github.com/brunobord/tdaemon/blob/master/tdaemon.py
 [2] More on this at http://johnj.com/navblog/continuous-testing-in-python-and-clojure/
 

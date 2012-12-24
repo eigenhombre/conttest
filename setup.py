@@ -14,9 +14,8 @@ setup(name='conttest',
       packages=['conttest'],
       scripts=[],
       url='https://github.com/eigenhombre/continuous-testing-helper',
-      license='',
+      license='MIT',
       description='Simple continuous testing tool',
       long_description=open('README.md').read() if exists("README.md") else "",
       entry_points=dict(console_scripts = ['conttest=conttest.conttest:main']),
-      install_requires=[],
-)
+      install_requires=[])
