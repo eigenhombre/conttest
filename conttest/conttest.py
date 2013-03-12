@@ -22,7 +22,7 @@ def include_file_in_checks(path):
     lives in an undesired directory.
     """
     IGNORE_PREFIXES = ('.', '#')
-    IGNORE_EXTENSIONS = ('pyc', 'pyo')
+    IGNORE_EXTENSIONS = ('pyc', 'pyo', '_flymake.py')
     IGNORE_DIRS = ('.git', '.hg', '.svn')
 
     basename = os.path.basename(path)
