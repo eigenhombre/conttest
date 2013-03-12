@@ -12,7 +12,7 @@ particular setup.
 Note that ANY command you supply the script will be run, so be
 careful.  You have been warned!
 
-[1] Adapted from https://github.com/brunobord/tdaemon/blob/master/tdaemon.py
+[1] https://github.com/brunobord/tdaemon/blob/master/tdaemon.py
 
 ### Installation
 
