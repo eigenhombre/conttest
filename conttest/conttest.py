@@ -8,11 +8,14 @@ Usage:
 
 """
 
-import time
-import os.path
-import sys
 import hashlib
+import os.path
 import subprocess
+import sys
+import time
+
+HASHES = "hashes"
+TIMES = "times"
 
 
 def include_file_in_checks(path):
@@ -45,7 +48,18 @@ def skip_excludes(root, excludes):
     return root.split('/')[0] in excludes
 
 
-def walk(top, filehashes={}, excludes=[]):
+def getstate(full_path, method):
+    if method == HASHES:
+        try:
+            content = open(full_path).read()
+        except IOError:
+            return None  # will trigger our action
+        return hashlib.sha224(content).hexdigest()
+    assert method == TIMES
+    return os.path.getmtime(full_path)
+
+
+def walk(top, method, filestates={}, excludes=[]):
     """
     Walk directory recursively, storing a hash value for any
     non-excluded file; return a dictionary for all such files.
@@ -56,13 +70,8 @@ def walk(top, filehashes={}, excludes=[]):
         for name in files:
             full_path = os.path.join(root, name)
             if include_file_in_checks(full_path):
-                try:
-                    content = open(full_path).read()
-                except IOError:
-                    continue
-                hashcode = hashlib.sha224(content).hexdigest()
-                filehashes[full_path] = hashcode
-    return filehashes
+                filestates[full_path] = getstate(full_path, method)
+    return filestates
 
 
 def get_excludes(path):
@@ -73,7 +82,7 @@ def get_excludes(path):
                 if s.strip() != ""]
 
 
-def watch_dir(dir_, callback):
+def watch_dir(dir_, callback, method=HASHES):
     """
     Loop continuously, calling function <callback> if any non-excluded
     file has changed.
@@ -81,17 +90,18 @@ def watch_dir(dir_, callback):
     filedict = {}
     while True:
         excludes = get_excludes(dir_ + "/.conttest-excludes")
-        new = walk(dir_, {}, excludes=excludes)
+        new = walk(dir_, method, {}, excludes=excludes)
         if new != filedict:
             callback()
             # Do it again, in case command changed files (don't retrigger)
-            filedict = walk(dir_, {}, excludes=excludes)
+            filedict = walk(dir_, method, {}, excludes=excludes)
         time.sleep(0.3)
 
 
 def do_command_on_update(cmd):
     try:
-        watch_dir(".", lambda: subprocess.call(cmd, shell=True))
+        watch_dir(".", lambda: subprocess.call(cmd, shell=True),
+                  method=TIMES)
     except KeyboardInterrupt:
         print
 
