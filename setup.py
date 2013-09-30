@@ -8,7 +8,7 @@ except ImportError:
     from distutils.core import setup
 
 setup(name='conttest',
-      version='0.0.5',
+      version='0.0.6',
       author='John Jacobsen',
       author_email='john@mail.npxdesigns.com',
       packages=['conttest'],
