@@ -56,7 +56,10 @@ def getstate(full_path, method):
             return None  # will trigger our action
         return hashlib.sha224(content).hexdigest()
     assert method == TIMES
-    return os.path.getmtime(full_path)
+    try:
+        return os.path.getmtime(full_path)
+    except OSError:  # e.g., broken link
+        return None
 
 
 def walk(top, method, filestates={}, excludes=[]):
