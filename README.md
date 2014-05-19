@@ -19,7 +19,7 @@ careful.  You have been warned!
     ./setup.py install  # from source
 or
 
-    easy_install conttest  # or use pip instead of easy_install
+    pip install conttest  # use sudo if installing globally
 
 ### Usage examples
 
