@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 Continuous Testing Helper
 
@@ -10,6 +9,7 @@ Usage:
 
 import hashlib
 import os.path
+import re
 import subprocess
 import sys
 import time
@@ -18,7 +18,7 @@ HASHES = "hashes"
 TIMES = "times"
 
 
-def include_file_in_checks(path):
+def include_file_in_checks(path, excludes):
     """
     Determine whether file should be included in checks; reject if
     file has an undesired prefix, an undesired file extension, or
@@ -39,13 +39,14 @@ def include_file_in_checks(path):
     for part in parts:
         if part in IGNORE_DIRS:
             return False
-    return True
+    return not excluded_pattern(path, excludes)
 
 
-def skip_excludes(root, excludes):
-    if root.startswith("./"):
-        root = root[2:]
-    return root.split('/')[0] in excludes
+def excluded_pattern(root, excludes):
+    for pat in excludes:
+        if re.search(pat, root):
+            return True
+
 
 
 def getstate(full_path, method):
@@ -68,21 +69,33 @@ def walk(top, method, filestates={}, excludes=[]):
     non-excluded file; return a dictionary for all such files.
     """
     for root, _, files in os.walk(top, topdown=False):
-        if skip_excludes(root, excludes):
-            continue
         for name in files:
+            if excluded_pattern(name, excludes):
+                continue
             full_path = os.path.join(root, name)
-            if include_file_in_checks(full_path):
+            if include_file_in_checks(full_path, excludes):
                 filestates[full_path] = getstate(full_path, method)
     return filestates
 
 
-def get_excludes(path):
+def get_exclude_patterns_from_file(path):
     if not os.path.exists(path):
         return []
     with file(path) as f:
         return [s.strip() for s in f.read().split()
                 if s.strip() != ""]
+
+
+def show_diffs(a, b):
+    """
+    For debugging: print relevant diffs.
+    """
+    if abs((len(a.keys()) - len(b.keys()))) > 100:
+        print "Massive change of keys:", len(a.keys()), "->", len(b.keys())
+    elif a.keys() != b.keys():
+        print set(a.keys()) - set(b.keys())
+    else:
+        print [(k, a[k], b[k]) for k in a.keys() if a[k] != b[k]]
 
 
 def watch_dir(dir_, callback, method=HASHES):
@@ -92,7 +105,7 @@ def watch_dir(dir_, callback, method=HASHES):
     """
     filedict = {}
     while True:
-        excludes = get_excludes(dir_ + "/.conttest-excludes")
+        excludes = get_exclude_patterns_from_file(dir_ + "/.conttest-excludes")
         new = walk(dir_, method, {}, excludes=excludes)
         if new != filedict:
             callback()

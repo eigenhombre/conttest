@@ -29,14 +29,15 @@ or
 Placing a file .conttest-excludes in the current working directory
 will exclude subdirectories, e.g.:
 
-    .svn
+    .svn$
     .git
     build
+    vendor/elastic*
     install
 
-will skip checking for changes in those directories.  This can save
-quite a bit of time and CPU during normal operation.  Currently this
-works for top-level directories only!
+will match files against the listed regular expressions and skip checking
+for changes in those directories.  This can save quite a bit of time and CPU
+during normal operation.
 
 ## Author
 
