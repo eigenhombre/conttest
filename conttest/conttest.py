@@ -91,11 +91,11 @@ def show_diffs(a, b):
     For debugging: print relevant diffs.
     """
     if abs((len(a.keys()) - len(b.keys()))) > 100:
-        print "Massive change of keys:", len(a.keys()), "->", len(b.keys())
+        print("Massive change of keys:", len(a.keys()), "->", len(b.keys()))
     elif a.keys() != b.keys():
-        print set(a.keys()) - set(b.keys())
+        print(set(a.keys()) - set(b.keys()))
     else:
-        print [(k, a[k], b[k]) for k in a.keys() if a[k] != b[k]]
+        print([(k, a[k], b[k]) for k in a.keys() if a[k] != b[k]])
 
 
 def watch_dir(dir_, callback, method=HASHES):
