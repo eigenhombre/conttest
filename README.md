@@ -2,12 +2,12 @@
 
 Continuous testing helper, adapted from [1], but which makes no
 assumption about what tests you might want to run continuously while
-developing.  For more information, see [this blog post](http://eigenhombre.com/testing/2012/03/31/ontinuous-testing-in-python-clojure-and-blub/).
+developing.  For more information, see
+[this blog post](http://eigenhombre.com/testing/2012/03/31/ontinuous-testing-in-python-clojure-and-blub/).
 
-**Any command supplied to the script will be run once and
-then repeated any time the code in the current working directory
-changes.**  You may wish to edit the IGNORE_* tuples to suit your
-particular setup.
+**Any command supplied to the script will be run once and then
+repeated any time a file in the current working directory changes,**
+except for files excluded using `.conttest-excludes` as described below.
 
 Note that ANY command you supply the script will be run, so be
 careful.  You have been warned!
@@ -26,7 +26,7 @@ or
     conttest nosetests
     conttest 'nosetests -q && pep8 -r .'
 
-Placing a file .conttest-excludes in the current working directory
+Placing a file `.conttest-excludes` in the current working directory
 will exclude subdirectories, e.g.:
 
     .svn$
