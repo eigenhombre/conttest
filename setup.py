@@ -7,6 +7,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
+
 setup(name='conttest',
       version='0.0.8',
       author='John Jacobsen',
@@ -17,5 +18,5 @@ setup(name='conttest',
       license='MIT',
       description='Simple continuous testing tool',
       long_description=open('README.md').read() if exists("README.md") else "",
-      entry_points=dict(console_scripts = ['conttest=conttest.conttest:main']),
+      entry_points=dict(console_scripts=['conttest=conttest.conttest:main']),
       install_requires=[])

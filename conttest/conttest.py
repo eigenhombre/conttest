@@ -48,7 +48,6 @@ def excluded_pattern(root, excludes):
             return True
 
 
-
 def getstate(full_path, method):
     if method == HASHES:
         try:
