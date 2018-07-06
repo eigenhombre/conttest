@@ -43,7 +43,7 @@ during normal operation.
 
 ## Author
 
-[John Jacobsen](http://eigenhombre.com)
+[John Jacobsen](http://zerolib.com)
 
 ## License
 
