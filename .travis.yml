@@ -11,7 +11,7 @@ env:
 
 # command to install dependencies
 install:
-    - pip install pep8 --use-mirrors
+    - pip install pep8
 
 # command to run tests
 # require 100% coverage (not including test files) to pass Travis CI test
