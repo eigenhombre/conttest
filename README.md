@@ -11,10 +11,13 @@ developing.  For more information, see
 repeated any time a file in the current working directory changes,**
 except for files excluded using `.conttest-excludes` as described below.
 
+**See also** [2]
+
 Note that ANY command you supply the script will be run, so be
 careful.  You have been warned!
 
 [1] https://github.com/brunobord/tdaemon/blob/master/tdaemon.py
+[2] https://github.com/eigenhombre/conttest (simpler, faster, Go-language version)
 
 ### Installation
 
