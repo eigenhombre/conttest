@@ -1,7 +1,5 @@
 # conttest
 
-<a href="https://travis-ci.org/eigenhombre/continuous-testing-helper"><img src="https://travis-ci.org/eigenhombre/continuous-testing-helper.svg?branch=master"></a>
-
 Continuous testing helper, adapted from [1], but which makes no
 assumption about what tests you might want to run continuously while
 developing.  For more information, see
